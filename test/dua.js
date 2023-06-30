@@ -1,0 +1,1 @@
+console.log(cetakNama('Rizky Perdana Nst'));
