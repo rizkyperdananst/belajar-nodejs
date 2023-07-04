@@ -6,7 +6,7 @@ const main = async () => {
      const noHp = await contacts.tulisPertanyaan('Masukkan nomor handphone anda : ');
 
      contacts.simpanContact(nama, email, noHp);
-     
+
 };
 
 main();
