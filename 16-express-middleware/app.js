@@ -1,5 +1,6 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
+const morgan = require('morgan');
 const app = express()
 const port = 3000
 
@@ -10,7 +11,19 @@ const port = 3000
 
 // gunakan view engine ejs / yang lain
 app.set('view engine', 'ejs');
+
+// Third-party Middleware
 app.use(expressLayouts);
+app.use(morgan('dev'));
+
+// Built-in Middleware | => Artinya jika kita ingin menghubungkan file gambar, css, js kita maka harus mmebuat middleware static seperti dibawah ini
+app.use(express.static('public'))
+
+// Application Level Middleware |
+app.use((req, res, next) => {
+     console.log('Time: ', Date.now());
+     next();
+})
 
 app.get('/', (req, res) => {
      const mahasiswa = [
@@ -55,7 +68,7 @@ app.get('/product/:id', (req, res) => {
 })
 
 // Middleware
-app.use('/', (req, res) => {
+app.use((req, res) => {
      res.status(404);
      res.send('<h1>404 Not Found</h1>');
 })
