@@ -15,11 +15,19 @@ if (!fs.existsSync(filePath)) {
      fs.writeFileSync(filePath, '[]', 'utf8');
 }
 
+const loadContact = () => {
+     const fileBuffer = fs.readFileSync('data/contacts.json', 'utf-8');
+     const contacts = JSON.parse(fileBuffer);
+
+     return contacts;
+}
 
 const simpanContact = (nama, email, noHP) => {
      const contact = { nama, email, noHP};
-     const fileBuffer = fs.readFileSync('data/contacts.json', 'utf-8');
-     const contacts = JSON.parse(fileBuffer);
+     // const fileBuffer = fs.readFileSync('data/contacts.json', 'utf-8');
+     // const contacts = JSON.parse(fileBuffer);
+
+     const contacts = loadContact();
 
      // cek duplikat
      const duplikat = contacts.find((contact) => contact.nama === nama);
@@ -52,4 +60,42 @@ const simpanContact = (nama, email, noHP) => {
      // rl.close();
 };
 
-module.exports = { simpanContact }
+const listContact = () => {
+     const contacts = loadContact();
+     console.log('Daftar Kontak : ');
+     contacts.forEach((contact, i) => {
+          console.log(`${i + 1}. ${contact.nama} - ${contact.noHP}`);
+     });
+}
+
+const detailContact = (nama) => {
+     const contacts = loadContact();
+     const contact = contacts.find((contact) => contact.nama.toLowerCase() === nama.toLowerCase());
+
+     if(!contact) {
+          console.log('Contact tidak ditemukan!');
+          return false;
+     };
+
+     console.log(`Nama : ${contact.nama}`);
+     console.log(`Nomor HP : ${contact.noHP}`);
+     if(contact.email) {
+          console.log(`Email : ${contact.email}`);
+     }
+};
+
+const deleteContact = (nama) => {
+     const contacts = loadContact();
+     const newContacts = contacts.filter((contact) => contact.nama.toLowerCase() !== nama.toLowerCase());
+
+     if(contacts.length === newContacts.length) {
+          console.log('Contact tidak ditemukan!');
+          return false;
+     };
+
+     fs.writeFileSync('data/contacts.json', JSON.stringify(newContacts));
+
+     console.log(`${nama} berhasil dihapus!`);
+}
+
+module.exports = { simpanContact, listContact, detailContact, deleteContact };
