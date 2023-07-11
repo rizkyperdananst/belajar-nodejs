@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row mt-3">
+    <div class="col-md-8">
+      <h4>Daftar Contact</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>Email</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (contacts.length === 0) { %>
+            <div class="alert alert-danger fw-bold" role="alert">
+              Data contact masih kosong <br>
+            </div>
+          <% } %>
+          <% contacts.forEach((contact,i) => { %>
+            <tr>
+              <td><%= i+1 %></td>
+              <td><%= contact.nama %></td>
+              <td><%= contact.email %></td>
+              <td>
+                <a href="/contact/<%= contact.nama %>" class="btn btn-success">Detail</a>
+              </td>
+            </tr>
+          <% }) %>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
